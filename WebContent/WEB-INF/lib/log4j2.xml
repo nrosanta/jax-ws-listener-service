@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" name="WebhookTestListener">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{YYYY-MM-dd HH:mm:ss} [%t] %-5p %c{1}:%L - %msg%n" />
+        </Console>
+        <RollingFile name="File" filename="${sys:catalina.home}/logs/webhook/webhooks.log" filepattern="${sys:catalina.home}/logs/webhook/webhooks-%d{yyyy-MM-dd}-%i.log" append="true">
+            <PatternLayout pattern="%d %p %c{1.} [%t] %m%n" />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="2 MB"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+            
+            <DefaultRolloverStrategy>
+            	<Delete basePath="${sys:catalina.home}/logs/webhook/" maxDepth="1">
+	          		<IfFileName glob="*.*" />
+	          		<IfLastModified age="30d" />
+	        	</Delete>
+	        	<Delete basePath="${sys:catalina.home}/logs/webhook/json" maxDepth="1">
+	          		<IfFileName glob="*.*" />
+	          		<IfLastModified age="30d" />
+	        	</Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="File" />
+        </Root>
+    </Loggers>
+</Configuration>
